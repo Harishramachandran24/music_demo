@@ -24,18 +24,18 @@ class _playerState extends State<player> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    if(mounted){
+    if (mounted) {
       initPlayer();
     }
-      setState(() {
-        issongplaying=true;
-        _animationIconController.forward();
-        audioCache.play(widget.playList[0]["song"]);
-      });
+    setState(() {
+      issongplaying = true;
+      _animationIconController.forward();
+      audioCache.play(widget.playList[0]["song"]);
+    });
   }
 
   void initPlayer() {
-    if(mounted){
+    if (mounted) {
       _animationIconController = AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 450),
@@ -45,19 +45,19 @@ class _playerState extends State<player> with TickerProviderStateMixin {
       audioCache = AudioCache(fixedPlayer: audioPlayer);
       audioPlayer.onDurationChanged.listen((d) {
         setState(() {
-          running_seconds=d.inSeconds;
+          running_seconds = d.inSeconds;
           duration = d;
         });
       });
       audioPlayer.onAudioPositionChanged.listen((p) {
         setState(() {
           position = p;
-          playing_seconds=p.inSeconds;
+          playing_seconds = p.inSeconds;
         });
-        if(running_seconds==playing_seconds){
+        if (running_seconds == playing_seconds) {
           setState(() {
             _animationIconController.reverse();
-            issongplaying=false;
+            issongplaying = false;
           });
         }
       });
@@ -77,13 +77,12 @@ class _playerState extends State<player> with TickerProviderStateMixin {
         value: position.inSeconds.toDouble(),
         max: duration.inSeconds.toDouble(),
         onChanged: (double value) {
-            setState(() {
-              seekToSecond(value.toInt());
-              value = value;
-            });
+          setState(() {
+            seekToSecond(value.toInt());
+            value = value;
+          });
         });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,16 +101,25 @@ class _playerState extends State<player> with TickerProviderStateMixin {
                   tileMode: TileMode.clamp)),
         ),
         Positioned(
-          top: _height*0.18,
-            left: _width*0.09,
-            right: _width*0.09,
+            top: _height * 0.18,
+            left: _width * 0.09,
+            right: _width * 0.09,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children:  [
+              children: [
                 Column(
-                  children:  [
-                    Text(widget.playList[0]["name"],style: const TextStyle(color: Colors.white,fontSize: 18.0,fontWeight: FontWeight.bold),),
-                    Text(widget.playList[0]["musicby"],style: const TextStyle(color: Colors.white),)
+                  children: [
+                    Text(
+                      widget.playList[0]["name"],
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      widget.playList[0]["musicby"],
+                      style: const TextStyle(color: Colors.white),
+                    )
                   ],
                 )
               ],
@@ -129,10 +137,10 @@ class _playerState extends State<player> with TickerProviderStateMixin {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SizedBox(height: _height*0.05),
-                 slider(),
+                SizedBox(height: _height * 0.05),
+                slider(),
                 Padding(
-                  padding: const EdgeInsets.only(right: 20.0,left: 28.0),
+                  padding: const EdgeInsets.only(right: 20.0, left: 28.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -146,38 +154,35 @@ class _playerState extends State<player> with TickerProviderStateMixin {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      IconButton(onPressed:(){
-                        if(position.inSeconds.toDouble()<30.0){
-                          setState(() {
-                            seekToSecond(0);
-                          });
-                        }else{
-                          var value=position.inSeconds.toDouble()-30.0;
-                          setState(() {
-                            seekToSecond(value.toInt());
-                          });
-                        }
-
-                      }, icon: Icon(Icons.replay_30)),
+                      IconButton(
+                          onPressed: () {
+                            if (position.inSeconds.toDouble() < 30.0) {
+                              setState(() {
+                                seekToSecond(0);
+                              });
+                            } else {
+                              var value = position.inSeconds.toDouble() - 30.0;
+                              setState(() {
+                                seekToSecond(value.toInt());
+                              });
+                            }
+                          },
+                          icon: const Icon(Icons.replay_30)),
                       GestureDetector(
                         onTap: () {
-                          print("s");
-                          if(issongplaying){
+                          if (issongplaying) {
                             setState(() {
                               _animationIconController.reverse();
                               audioPlayer.pause();
-                              issongplaying=false;
+                              issongplaying = false;
                             });
-                          }
-                          else{
-                            print("els");
+                          } else {
                             setState(() {
                               _animationIconController.forward();
                               audioCache.play(widget.playList[0]["song"]);
-                              issongplaying=true;
+                              issongplaying = true;
                             });
                           }
-
                         },
                         child: ClipOval(
                           child: Container(
@@ -193,21 +198,22 @@ class _playerState extends State<player> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      IconButton(onPressed:(){
-                        var value=position.inSeconds.toDouble()+30.0;
-                        if(value>duration.inSeconds){
-                          setState(() {
-                            seekToSecond(duration.inSeconds);
-                            _animationIconController.reverse();
-                            issongplaying=false;
-                          });
-                        }else{
-                          setState(() {
-                            seekToSecond(value.toInt());
-                          });
-                        }
-
-                      }, icon: const Icon(Icons.forward_30)),
+                      IconButton(
+                          onPressed: () {
+                            var value = position.inSeconds.toDouble() + 30.0;
+                            if (value > duration.inSeconds) {
+                              setState(() {
+                                seekToSecond(duration.inSeconds);
+                                _animationIconController.reverse();
+                                issongplaying = false;
+                              });
+                            } else {
+                              setState(() {
+                                seekToSecond(value.toInt());
+                              });
+                            }
+                          },
+                          icon: const Icon(Icons.forward_30)),
                     ],
                   ),
                 )
@@ -241,4 +247,3 @@ class _playerState extends State<player> with TickerProviderStateMixin {
     audioPlayer.dispose();
   }
 }
-

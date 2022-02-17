@@ -112,7 +112,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                             _selectedMusic = value!;
                                             if (_selectedMusic == "arrahman") {
                                               playList.add(all_songs[0]);
-                                              print(playList);
                                             }
                                           });
                                         }),
@@ -169,7 +168,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                             _selectedMusic = value!;
                                             if (_selectedMusic == "anirudh") {
                                               playList.add(all_songs[1]);
-                                              print(playList);
                                             }
                                           });
                                         }),
